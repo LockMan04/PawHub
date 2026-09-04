@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: auto;
+}
+
+/* Accessible native scrollbar styling */
+html {
+  scrollbar-color: rgba(120, 120, 120, 0.35) transparent;
+  scrollbar-width: thin;
+}
+
+::selection {
+  background-color: #18181b;
+  color: #fafafa;
+}
+
+.dark ::selection {
+  background-color: #fafafa;
+  color: #18181b;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .stroke-text {
+    -webkit-text-stroke: 1.5px currentColor;
+    color: transparent;
+  }
+
+  .stroke-text-thick {
+    -webkit-text-stroke: 2.5px currentColor;
+    color: transparent;
+  }
+
+  .content-visibility-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 1200px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

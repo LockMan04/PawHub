@@ -1,0 +1,64 @@
+import { TypographyVariant } from "../types/cat";
+
+export interface MessageDefinition {
+  text: string;
+  subtitle?: string;
+  size: "small" | "medium" | "hero";
+  variant: TypographyVariant;
+}
+
+export const HERO_START: MessageDefinition = {
+  text: "HELLO",
+  subtitle: "i wish i was a cat, no school, no work, just meow meow",
+  size: "hero",
+  variant: "hero",
+};
+
+export const HERO_END: MessageDefinition = {
+  text: "BYEBYE",
+  size: "hero",
+  variant: "hero",
+};
+
+export const INTERMEDIATE_MESSAGES: MessageDefinition[] = [
+  { text: "pspspsps", size: "medium", variant: "outlined" },
+  { text: "probably judging you", size: "medium", variant: "editorial-serif" },
+  { text: "no thoughts just meow", size: "small", variant: "pill" },
+  { text: "certified bug hunter", size: "small", variant: "brutalist-mono" },
+  { text: "404 cat not found", size: "medium", variant: "outlined" },
+  { text: "npm install cat", size: "small", variant: "brutalist-mono" },
+  { text: "professional napper", size: "medium", variant: "editorial-serif" },
+  { text: "works on my machine", size: "medium", variant: "gradient" },
+  { text: "meow.exe", size: "small", variant: "brutalist-mono" },
+  { text: "touch grass or touch cat", size: "medium", variant: "gradient" },
+  { text: "one more cat", size: "small", variant: "pill" },
+  { text: "ok actually one more", size: "medium", variant: "editorial-serif" },
+  { text: "git commit -m meow", size: "small", variant: "brutalist-mono" },
+  { text: "keyboard is made of warm", size: "medium", variant: "editorial-serif" },
+  { text: "sudo give treats", size: "small", variant: "brutalist-mono" },
+  { text: "cat overflow: maximum floof", size: "medium", variant: "outlined" },
+  { text: "staring into the void", size: "medium", variant: "editorial-serif" },
+  { text: "zoomies at 3 am", size: "medium", variant: "gradient" },
+  { text: "if it fits i sits", size: "small", variant: "pill" },
+  { text: "hunting bugs in production", size: "small", variant: "brutalist-mono" },
+  { text: "paws on the spacebar", size: "small", variant: "pill" },
+  { text: "human is just a warm bed that opens cans", size: "medium", variant: "editorial-serif" },
+  { text: "null pointer exception: treat not found", size: "small", variant: "brutalist-mono" },
+  { text: "gravity inspection in progress", size: "medium", variant: "gradient" },
+  { text: "knock glass off table: test passed", size: "small", variant: "brutalist-mono" },
+  { text: "meow meow meow meow meow", size: "medium", variant: "outlined" },
+  { text: "living rent free in your memory", size: "medium", variant: "gradient" },
+  { text: "purr level: critical", size: "medium", variant: "outlined" },
+  { text: "ctrl+alt+cat", size: "small", variant: "brutalist-mono" },
+  { text: "silent observer of human errors", size: "medium", variant: "editorial-serif" },
+  { text: "do not disturb: dreaming of tuna", size: "small", variant: "pill" },
+  { text: "architect of chaos", size: "medium", variant: "editorial-serif" },
+  { text: "yarn dependency unresolved", size: "small", variant: "brutalist-mono" },
+  { text: "high speed loaf mode", size: "small", variant: "pill" },
+  { text: "infinite purr loop", size: "medium", variant: "gradient" },
+  { text: "belly trap: do not touch", size: "medium", variant: "outlined" },
+  { text: "system rebooted by accidental paw", size: "small", variant: "brutalist-mono" },
+  { text: "existential purring", size: "medium", variant: "editorial-serif" },
+  { text: "9 lives left", size: "small", variant: "pill" },
+  { text: "master of the cardboard box", size: "medium", variant: "gradient" },
+];
