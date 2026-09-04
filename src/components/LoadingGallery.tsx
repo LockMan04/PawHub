@@ -1,14 +1,22 @@
 import React from "react";
+import { SiteConfig } from "../types/site-config";
 
-export const LoadingGallery: React.FC = () => {
+export interface LoadingGalleryProps {
+  config: SiteConfig;
+}
+
+export const LoadingGallery: React.FC<LoadingGalleryProps> = ({ config }) => {
+  const headingText = config.heroStart.text;
+  const subtitleText = `gathering ${config.pluralName}...`;
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-24">
       <div className="text-center space-y-4 mb-16">
         <h1 className="text-6xl sm:text-8xl font-black tracking-tighter text-neutral-900 dark:text-neutral-100 uppercase animate-pulse">
-          HELLO
+          {headingText}
         </h1>
         <p className="font-mono text-xs sm:text-sm tracking-widest text-neutral-400 uppercase">
-          gathering cats...
+          {subtitleText}
         </p>
       </div>
 

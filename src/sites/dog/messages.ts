@@ -1,0 +1,55 @@
+import { MessageDefinition } from "../../types/site-config";
+
+export const DOG_HERO_START: MessageDefinition = {
+  text: "WOOF",
+  subtitle: "i wish i was a dog, no worry, no stress, just zoomies and barks",
+  size: "hero",
+  variant: "hero",
+};
+
+export const DOG_HERO_END: MessageDefinition = {
+  text: "GOOD BOY",
+  size: "hero",
+  variant: "hero",
+};
+
+export const DOG_MESSAGES: MessageDefinition[] = [
+  { text: "bork bork", size: "medium", variant: "outlined" },
+  { text: "zoomies at 3 am", size: "medium", variant: "gradient" },
+  { text: "did someone say walk?", size: "medium", variant: "editorial-serif" },
+  { text: "good boy confirmed", size: "small", variant: "pill" },
+  { text: "squirrel detected", size: "small", variant: "brutalist-mono" },
+  { text: "professional ball chaser", size: "medium", variant: "editorial-serif" },
+  { text: "tail wagging at 120 fps", size: "medium", variant: "gradient" },
+  { text: "belly rubs required", size: "medium", variant: "outlined" },
+  { text: "git commit -m bork", size: "small", variant: "brutalist-mono" },
+  { text: "paws on the keyboard", size: "small", variant: "pill" },
+  { text: "such floof much wow", size: "medium", variant: "gradient" },
+  { text: "sniff inspection in progress", size: "medium", variant: "editorial-serif" },
+  { text: "404 bone not found", size: "medium", variant: "outlined" },
+  { text: "living rent free in your backyard", size: "medium", variant: "gradient" },
+  { text: "bark level: critical", size: "medium", variant: "outlined" },
+  { text: "sudo give chimken", size: "small", variant: "brutalist-mono" },
+  { text: "treat overflow detected", size: "medium", variant: "outlined" },
+  { text: "running in sleep mode", size: "medium", variant: "editorial-serif" },
+  { text: "certified stick manager", size: "small", variant: "brutalist-mono" },
+  { text: "infinite fetch loop", size: "medium", variant: "gradient" },
+  { text: "goodest boy in staging", size: "small", variant: "pill" },
+  { text: "catch tennis ball: test passed", size: "small", variant: "brutalist-mono" },
+  { text: "human came home: panic celebration", size: "medium", variant: "editorial-serif" },
+  { text: "boop the snoot", size: "small", variant: "pill" },
+  { text: "waiting patiently by the door", size: "medium", variant: "editorial-serif" },
+  { text: "leash ready: deploy now", size: "small", variant: "brutalist-mono" },
+  { text: "master of the dog bed", size: "medium", variant: "gradient" },
+  { text: "ears in airplane mode", size: "medium", variant: "outlined" },
+  { text: "muddy paws protocol activated", size: "small", variant: "brutalist-mono" },
+  { text: "staring at the snack cupboard", size: "medium", variant: "editorial-serif" },
+  { text: "high speed grass zoomies", size: "small", variant: "pill" },
+  { text: "golden retriever energy", size: "medium", variant: "gradient" },
+  { text: "sleeping upside down", size: "medium", variant: "editorial-serif" },
+  { text: "ctrl+alt+dog", size: "small", variant: "brutalist-mono" },
+  { text: "barking at invisible leaves", size: "medium", variant: "outlined" },
+  { text: "fluffiness parameter: maximum", size: "medium", variant: "gradient" },
+  { text: "security guard of the front porch", size: "medium", variant: "editorial-serif" },
+  { text: "head tilt analysis complete", size: "small", variant: "pill" },
+];

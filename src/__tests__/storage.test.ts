@@ -1,8 +1,10 @@
 // @vitest-environment jsdom
 import { describe, it, expect, beforeEach, beforeAll, vi } from "vitest";
 import { renderHook, waitFor } from "@testing-library/react";
-import { isImagePreloaded, preloadImage, clearPreloadCache } from "../lib/imagePreloader";
-import { safeGetCachedData, SESSION_STORAGE_KEY, useCats } from "../hooks/useCats";
+import { isImagePreloaded, preloadImage, clearPreloadCache } from "../core/images/preloader";
+import { readGalleryCache } from "../core/gallery/storage";
+import { useAnimalGallery } from "../hooks/useAnimalGallery";
+import { catSiteConfig } from "../sites/cat";
 
 class MockStorage {
   private store = new Map<string, string>();
@@ -22,6 +24,9 @@ class MockStorage {
 
 class MockImage {
   private _src = "";
+  srcset = "";
+  sizes = "";
+  currentSrc = "";
   decoding = "async";
   onload: (() => void) | null = null;
   onerror: (() => void) | null = null;
@@ -32,6 +37,7 @@ class MockImage {
 
   set src(val: string) {
     this._src = val;
+    this.currentSrc = val;
     setTimeout(() => {
       this.onload?.();
     }, 0);
@@ -54,15 +60,15 @@ describe("Storage & Cache Integrity", () => {
     vi.restoreAllMocks();
   });
 
-  it("should return null from safeGetCachedData when storage has corrupt JSON", () => {
-    sessionStorage.setItem(SESSION_STORAGE_KEY, "{ broken corrupt json content");
+  it("should return null from readGalleryCache when storage has corrupt JSON", () => {
+    sessionStorage.setItem("test-store-key", "{ broken corrupt json content");
 
-    const result = safeGetCachedData(SESSION_STORAGE_KEY);
+    const result = readGalleryCache("test-store-key");
     expect(result).toBeNull();
   });
 
-  it("should recover useCats gracefully when sessionStorage has corrupt JSON", async () => {
-    sessionStorage.setItem(SESSION_STORAGE_KEY, "{ corrupt: true !!!");
+  it("should recover useAnimalGallery gracefully when sessionStorage has corrupt JSON", async () => {
+    sessionStorage.setItem(catSiteConfig.storageKey, "{ corrupt: true !!!");
 
     vi.stubGlobal(
       "fetch",
@@ -76,14 +82,14 @@ describe("Storage & Cache Integrity", () => {
       })
     );
 
-    const { result } = renderHook(() => useCats(2));
+    const { result } = renderHook(() => useAnimalGallery(catSiteConfig, 2));
 
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
     });
 
     expect(result.current.items.length).toBeGreaterThan(0);
-    expect(result.current.catCount).toBe(2);
+    expect(result.current.count).toBe(2);
     expect(result.current.error).toBeNull();
   });
 
@@ -94,5 +100,16 @@ describe("Storage & Cache Integrity", () => {
 
     expect(isImagePreloaded("https://example.com/cat-94.jpg")).toBe(true);
     expect(isImagePreloaded("https://example.com/cat-0.jpg")).toBe(false);
+  });
+
+  it("should preload image with responsive srcSet and sizes", async () => {
+    const testUrl = "https://example.com/cat-responsive.jpg";
+    await preloadImage(testUrl, {
+      srcSet: "https://example.com/cat-360.jpg 360w, https://example.com/cat-640.jpg 640w",
+      sizes: "(max-width: 640px) 100vw, 50vw",
+      priority: "high",
+    });
+
+    expect(isImagePreloaded(testUrl)).toBe(true);
   });
 });

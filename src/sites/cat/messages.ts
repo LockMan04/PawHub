@@ -1,11 +1,4 @@
-import { TypographyVariant } from "../types/cat";
-
-export interface MessageDefinition {
-  text: string;
-  subtitle?: string;
-  size: "small" | "medium" | "hero";
-  variant: TypographyVariant;
-}
+import { MessageDefinition } from "../../types/site-config";
 
 export const HERO_START: MessageDefinition = {
   text: "HELLO",

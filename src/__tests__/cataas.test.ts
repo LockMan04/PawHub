@@ -3,7 +3,7 @@ import {
   getCatImageUrl,
   VERIFIED_FALLBACK_IDS,
   fetchUniqueNewCats,
-} from "../lib/cataas";
+} from "../sites/cat";
 
 describe("CATAAS Service", () => {
   beforeEach(() => {

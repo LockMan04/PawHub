@@ -1,8 +1,8 @@
 import { describe, it, expect } from "vitest";
-import { buildGallerySequence } from "../lib/gallery";
-import { Cat } from "../types/cat";
+import { buildGallerySequence } from "../core/gallery/sequence";
+import { AnimalImage } from "../types/gallery";
 
-function createMockCats(count: number): Cat[] {
+function createMockCats(count: number): AnimalImage[] {
   return Array.from({ length: count }, (_, i) => ({
     id: `mock-cat-${i + 1}`,
     url: `https://cataas.com/cat/mock-cat-${i + 1}`,

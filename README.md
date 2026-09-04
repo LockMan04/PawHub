@@ -1,94 +1,89 @@
-# Cat Scroll
+# PawHub
 
-Parallax visual playground hien thi bo suu tap meo tu CATAAS API ket hop typography da phong cach voi chuyen dong scroll-linked parallax dua tren Motion (`motion/react`) va Tailwind CSS.
+> Một nơi để lướt mèo, ngắm chó và trì hoãn công việc theo cách có gu.
 
-## Kien truc
+PawHub là một phòng triển lãm ảnh động vật chạy dài theo cú cuộn chuột. Ảnh bay nhẹ theo hiệu ứng parallax, chữ thỉnh thoảng chen ngang nói linh tinh, còn mày chỉ cần ngồi đó và giả vờ đây là liệu pháp tinh thần.
 
-```
-o:/Funny/
-├── index.html
-├── package.json
-├── vite.config.ts
-├── tsconfig.json
-├── tailwind.config.js
-├── .gitignore
-└── src/
-    ├── types/
-    │   └── cat.ts
-    ├── data/
-    │   └── messages.ts
-    ├── lib/
-    │   ├── cataas.ts
-    │   ├── gallery.ts
-    │   └── imagePreloader.ts
-    ├── hooks/
-    │   └── useCats.ts
-    ├── components/
-    │   ├── CatGallery.tsx
-    │   ├── CatImage.tsx
-    │   ├── FloatingText.tsx
-    │   ├── CustomScrollbar.tsx
-    │   ├── LoadingGallery.tsx
-    │   └── HeaderControls.tsx
-    ├── styles/
-    │   └── globals.css
-    ├── __tests__/
-    │   ├── cataas.test.ts
-    │   ├── gallery.test.ts
-    │   └── storage.test.ts
-    ├── App.tsx
-    └── main.tsx
-```
+Hiện tại hội quán có hai khu:
 
-## Cac Chuan Muc Production
+- [cat.lockman.dev](https://cat.lockman.dev) — mèo, thái độ và một lượng lông không thể kiểm soát.
+- [dog.lockman.dev](https://dog.lockman.dev) — chó, năng lượng và khả năng phát hiện sóc từ xa.
 
-1. **Tinh dung dan cua du lieu & Cam ket Load +20**:
-   - `useCats` su dung React state/ref lam source-of-truth cho danh sach meo, dam bao khong bao gio bi mat du lieu khi `sessionStorage` bi vo hieu hoa hoac corrupt.
-   - `fetchUniqueNewCats(existingIds, targetCount)` su dung retry loop voi tap ID cu, cam ket moi lan bam +20 se tang dung chinh xac 20 meo moi; neu sau maxRetries khong thu thap du se nem loi ro rang thay vi tra thieu.
-   - Phan biet TimeoutError (8s), TypeError (mat ket noi mang) va HTTP errors. Hien thi Error State day du: full-page khi loi khoi dau, floating banner co `aria-live="assertive"` va nut Retry khi loi Load More.
+Cùng một ứng dụng, khác cửa vào, không có cuộc chiến chó mèo nào xảy ra trong quá trình triển khai.
 
-2. **Toi uu Hinh anh & Bo nho**:
-   - Khong con co che warm toan bo gallery gay lang phi RAM va bang thong.
-   - Su dung responsive images qua `srcSet` va `sizes`, nạp anh 640px toi uu thay vi full-size goc.
-   - Su dung Lookahead Preload 1000px qua `IntersectionObserver` de nap truoc anh cach viewport 1.5 man hinh.
-   - Bounded in-memory cache toi da 80 anh de giai phong bo nho cho cac phien luot dai.
-   - Ap dung `content-visibility: auto` va `contain-intrinsic-size: auto 1200px` cho cac cluster duoi fold.
-   - Chi su dung `fetchPriority="high"` va `loading="eager"` cho cac anh trong viewport dau tien.
-   - Ton trong `prefers-reduced-motion` vo hieu hoa parallax va animation doi voi nguoi dung nhay cam voi chuyen dong.
+## Vào đây làm gì?
 
-3. **Accessibility (A11y) & SEO**:
-   - Khong an native scrollbar. `CustomScrollbar` dong vai tro quick-scrub progress indicator voi pointer hit-test 44px, do chieu cao bang ResizeObserver, throttle rAF, day du `role="scrollbar"`, `aria-valuenow`, `aria-valuemin`, `aria-valuemax`, ho tro phim mui ten, PageUp, PageDown, Home, End (respects reduced motion).
-   - Moi button (`HeaderControls`, Summon button, Retry button, Dismiss button) deu dat tieu chuan touch target >= 44x44px va co `aria-label` ro rang.
-   - Bo sung Skip Link (`Skip to main content`) o dau trang.
-   - Duy nhat mot the `<h1>` cho tieu de chinh "HELLO", "BYEBYE" su dung `<h2>`.
+- Cuộn để xem một dòng ảnh mèo hoặc chó được sắp xếp ngẫu nhiên.
+- Bật giao diện sáng/tối tùy tâm trạng và giờ đi ngủ.
+- Bấm `+20` khi số động vật hiện tại vẫn chưa đủ chữa lành.
+- Làm mới cả đàn bằng nút refresh.
+- Tải lại trang trong cùng phiên mà không phải triệu hồi mọi thứ từ đầu.
+- Dùng bàn phím và chế độ giảm chuyển động nếu mày không thích giao diện nhảy múa quá nhiều.
 
-4. **Kiem thu Tu dong (Vitest)**:
-   - Bo unit test trong `src/__tests__/`:
-     - Test `fetchUniqueNewCats` voi batching dedupe khi API tra trung.
-     - Test `fetchUniqueNewCats` nem loi khi het retry ma khong du 20 anh.
-     - Test xu ly TypeError va TimeoutError trong cataas service.
-     - Test `buildGallerySequence` voi cac bien 0, 1, 9, 10, 60 anh.
-     - Test `useCats` va storage phuc hoi thanh cong khi session cache bi hong JSON.
-     - Test bounded preload cache.
+Ảnh mèo đến từ [CATAAS](https://cataas.com), còn ảnh chó được gửi sang từ [Dog CEO](https://dog.ceo/dog-api/). PawHub chỉ lo phần dựng sân khấu; các diễn viên bốn chân thuộc về Internet.
 
-## Lenh phat trien & Kiem thu
+## Chạy trên máy
+
+Mày cần Node.js và npm. Sau đó:
 
 ```bash
-# Cai dat thu vien
 npm install
-
-# Chay dev server
 npm run dev
-
-# Chay unit test
-npm test
-
-# Kiem tra TypeScript types
-npm run typecheck
-
-# Build ban production
-npm run build
-
-# Preview ban build
-npm run preview
 ```
+
+Vite sẽ in địa chỉ local ra terminal, thường là `http://localhost:5173`.
+
+Muốn chọn khu mà không cần dựng hai subdomain local:
+
+- Mèo: `http://localhost:5173/?site=cat`
+- Chó: `http://localhost:5173/?site=dog`
+
+Nếu không chọn gì, mèo mặc định tiếp quản màn hình. Điều này hoàn toàn phù hợp với lịch sử loài người.
+
+## Mấy lệnh hữu ích
+
+```bash
+npm run dev        # Mở cửa hội quán
+npm test           # Kiểm tra xem chó mèo có phá gì không
+npm run typecheck  # Soi lỗi TypeScript
+npm run build      # Đóng gói bản production
+npm run preview    # Xem thử bản vừa đóng gói
+```
+
+## Bên trong có gì?
+
+PawHub dùng React, Vite, Tailwind CSS và Motion. Không cần thuộc lòng đống này để thưởng thức ảnh động vật, nhưng nếu mày muốn sửa code thì bản đồ ngắn gọn là:
+
+```text
+src/
+├── components/  Giao diện và các màn trình diễn
+├── core/        Logic dùng chung, âm thầm làm việc phía sau
+├── hooks/       Quản lý đàn ảnh, tải thêm và bộ nhớ phiên
+├── sites/
+│   ├── cat/     Nguồn ảnh, câu chữ và tính cách của mèo
+│   └── dog/     Nguồn ảnh, câu chữ và tính cách của chó
+├── styles/      Quần áo của toàn bộ hội quán
+└── __tests__/   Đội kiểm tra thiệt hại
+```
+
+App chọn khu dựa trên hostname (`cat.*`, `dog.*`) hoặc query `?site=...`. Nhờ vậy cả hai khu dùng chung giao diện và cách vận hành, nhưng vẫn có nguồn ảnh cùng lời thoại riêng.
+
+## Muốn thêm một con khác?
+
+Ví dụ ngày mai capybara giành quyền điều hành:
+
+1. Tạo `src/sites/capybara/`.
+2. Khai báo nơi lấy ảnh, câu chữ và cấu hình của capybara.
+3. Đăng ký nó trong `src/sites/registry.ts`.
+4. Thêm test để chắc rằng capybara không làm sập hội quán.
+
+Phần giao diện chung không cần nhân bản. Một repo là đủ; sở thú đã đông rồi, đừng nuôi thêm ba bản code giống nhau.
+
+## Ghi chú nhỏ nhưng có võ
+
+- Ảnh phụ thuộc vào API công cộng, nên đôi lúc Internet có thể dỗi.
+- Gallery được lưu trong `sessionStorage`, không phải hồ sơ tuyệt mật của thú cưng.
+- Nút tải thêm cố lấy đúng 20 ảnh mới, vì `+20` mà ra `+17` thì mất uy tín.
+- Hiệu ứng chuyển động tôn trọng `prefers-reduced-motion`.
+
+Nếu mày vào đây chỉ để xem ảnh chó mèo thì chúc vui. Nếu mày vào để đọc source code thì… cũng chúc vui, nhưng theo một kiểu khác.

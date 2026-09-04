@@ -1,4 +1,4 @@
-export interface Cat {
+export interface AnimalImage {
   id: string;
   url: string;
   tags: string[];
@@ -16,7 +16,7 @@ export type TypographyVariant =
   | "gradient"
   | "pill";
 
-export interface CatLayoutMeta {
+export interface AnimalLayoutMeta {
   column: number;
   widthRange: {
     min: number;
@@ -33,8 +33,8 @@ export interface CatLayoutMeta {
 export interface ImageGalleryItem {
   type: "image";
   id: string;
-  cat: Cat;
-  meta: CatLayoutMeta;
+  image: AnimalImage;
+  meta: AnimalLayoutMeta;
 }
 
 export interface TextGalleryItem {

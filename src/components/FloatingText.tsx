@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring, useReducedMotion } from "motion/react";
-import { TextGalleryItem } from "../types/cat";
+import { TextGalleryItem } from "../types/gallery";
 
 interface FloatingTextProps {
   item: TextGalleryItem;

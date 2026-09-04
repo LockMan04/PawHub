@@ -9,7 +9,23 @@ export function clearPreloadCache(): void {
   loadedCache.clear();
 }
 
-export function preloadImage(url: string, priority: "high" | "low" = "low"): Promise<void> {
+export interface PreloadImageOptions {
+  srcSet?: string;
+  sizes?: string;
+  priority?: "high" | "low";
+}
+
+export function preloadImage(
+  url: string,
+  priorityOrOptions?: "high" | "low" | PreloadImageOptions
+): Promise<void> {
+  const options: PreloadImageOptions =
+    typeof priorityOrOptions === "string"
+      ? { priority: priorityOrOptions }
+      : priorityOrOptions ?? {};
+
+  const priority = options.priority ?? "low";
+
   if (loadedCache.has(url)) {
     return Promise.resolve();
   }
@@ -22,11 +38,17 @@ export function preloadImage(url: string, priority: "high" | "low" = "low"): Pro
     img.decoding = "async";
 
     const addToCache = () => {
-      if (loadedCache.size >= MAX_CACHE_SIZE) {
-        const oldest = loadedCache.values().next().value;
-        if (oldest) loadedCache.delete(oldest);
+      const candidates = [url];
+      if (img.currentSrc && img.currentSrc !== url) {
+        candidates.push(img.currentSrc);
       }
-      loadedCache.add(url);
+      for (const src of candidates) {
+        if (loadedCache.size >= MAX_CACHE_SIZE) {
+          const oldest = loadedCache.values().next().value;
+          if (oldest) loadedCache.delete(oldest);
+        }
+        loadedCache.add(src);
+      }
     };
 
     img.onload = () => {
@@ -50,6 +72,12 @@ export function preloadImage(url: string, priority: "high" | "low" = "low"): Pro
       resolve();
     };
 
+    if (options.srcSet) {
+      img.srcset = options.srcSet;
+    }
+    if (options.sizes) {
+      img.sizes = options.sizes;
+    }
     img.src = url;
   });
 }

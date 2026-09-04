@@ -1,4 +1,5 @@
-import { Cat } from "../types/cat";
+import { AnimalImage } from "../../types/gallery";
+import { combineSignals, formatFetchError } from "../../core/http/client";
 
 export const CATAAS_BASE_URL = "https://cataas.com";
 
@@ -29,41 +30,24 @@ interface RawCataasCat {
   created_at?: string;
 }
 
-export function getCatImageUrl(id: string, width?: number): string {
+export function getCatImageUrl(imageOrId: AnimalImage | string, width?: number): string {
+  const id = typeof imageOrId === "string" ? imageOrId : imageOrId.id;
   if (width) {
     return `${CATAAS_BASE_URL}/cat/${id}?width=${width}`;
   }
   return `${CATAAS_BASE_URL}/cat/${id}`;
 }
 
-export function createCatSrcSet(id: string): string {
+export function createCatSrcSet(imageOrId: AnimalImage | string): string {
+  const id = typeof imageOrId === "string" ? imageOrId : imageOrId.id;
   return `${getCatImageUrl(id, 360)} 360w, ${getCatImageUrl(id, 640)} 640w, ${getCatImageUrl(id, 960)} 960w`;
-}
-
-function combineSignals(timeoutMs = 8000, externalSignal?: AbortSignal): AbortSignal {
-  const timeoutSignal = AbortSignal.timeout(timeoutMs);
-  if (!externalSignal) return timeoutSignal;
-  return AbortSignal.any([timeoutSignal, externalSignal]);
-}
-
-function formatFetchError(err: unknown): string {
-  if (err instanceof Error) {
-    if (err.name === "TimeoutError") {
-      return "Request to CATAAS API timed out (8s).";
-    }
-    if (err instanceof TypeError && err.message.toLowerCase().includes("fetch")) {
-      return "Network connection error. Check your internet connection.";
-    }
-    return err.message;
-  }
-  return "Unknown network error";
 }
 
 export async function fetchRandomCats(
   targetCount = 60,
   signal?: AbortSignal
-): Promise<Cat[]> {
-  const catsMap = new Map<string, Cat>();
+): Promise<AnimalImage[]> {
+  const catsMap = new Map<string, AnimalImage>();
   const combinedSignal = combineSignals(8000, signal);
   const requestsCount = Math.max(1, Math.ceil(targetCount / 40));
   let lastError: Error | null = null;
@@ -115,7 +99,7 @@ export async function fetchRandomCats(
 
   if (catsMap.size === 0) {
     if (lastError) {
-      throw new Error(`Failed to load cats: ${formatFetchError(lastError)}`);
+      throw new Error(`Failed to load cats: ${formatFetchError(lastError, "CATAAS API")}`);
     }
     throw new Error("Unable to load cats from CATAAS API. Check your internet connection.");
   }
@@ -128,8 +112,8 @@ export async function fetchUniqueNewCats(
   targetNewCount: number,
   signal?: AbortSignal,
   maxRetries = 4
-): Promise<Cat[]> {
-  const newCatsMap = new Map<string, Cat>();
+): Promise<AnimalImage[]> {
+  const newCatsMap = new Map<string, AnimalImage>();
   let attempts = 0;
   let lastError: Error | null = null;
 
@@ -178,7 +162,7 @@ export async function fetchUniqueNewCats(
   }
 
   if (newCatsMap.size < targetNewCount) {
-    const errorDetails = lastError ? ` (${formatFetchError(lastError)})` : "";
+    const errorDetails = lastError ? ` (${formatFetchError(lastError, "CATAAS API")})` : "";
     throw new Error(
       `Could not fetch exactly ${targetNewCount} new unique cats. Only gathered ${newCatsMap.size} after ${attempts} attempts${errorDetails}.`
     );
