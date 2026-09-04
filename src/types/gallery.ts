@@ -6,6 +6,13 @@ export interface AnimalImage {
   createdAt?: string;
 }
 
+export interface OriginRect {
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+}
+
 export type TextSize = "small" | "medium" | "hero";
 
 export type TypographyVariant =

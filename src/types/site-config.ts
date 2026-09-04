@@ -21,6 +21,21 @@ export interface SiteLabels {
   tryAgainButton: string;
   failedImageText: string;
   altText: (tags: string[] | null, id: string) => string;
+  copyLinkAction: string;
+  copyImageAction: string;
+  copiedAction: string;
+  shareAction: string;
+  saveAction: string;
+  savingAction: string;
+  openOriginalAction: string;
+  closeModalAction: string;
+  viewImageAction: (id: string) => string;
+  shareSuccessToast: string;
+  saveSuccessToast: string;
+  saveErrorToast: string;
+  copyImageSuccessToast: string;
+  copyImageFallbackToast: string;
+  downloadBlockedToast: string;
 }
 
 export interface SiteConfig {

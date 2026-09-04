@@ -14,6 +14,7 @@ Cùng một ứng dụng, khác cửa vào, không có cuộc chiến chó mèo 
 ## Vào đây làm gì?
 
 - Cuộn để xem một dòng ảnh mèo hoặc chó được sắp xếp ngẫu nhiên.
+- Bấm vào bất kỳ ảnh nào để xem cận cảnh sắc nét, sao chép liên kết (Copy), chia sẻ (Share), tải ảnh về máy (Save) hoặc mở tab ảnh gốc. Rê chuột lên ảnh cũng có sẵn các nút bấm nhanh.
 - Bật giao diện sáng/tối tùy tâm trạng và giờ đi ngủ.
 - Bấm `+20` khi số động vật hiện tại vẫn chưa đủ chữa lành.
 - Làm mới cả đàn bằng nút refresh.

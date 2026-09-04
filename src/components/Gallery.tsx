@@ -1,7 +1,10 @@
-import React, { useMemo } from "react";
-import { GalleryItem, TextGalleryItem } from "../types/gallery";
+import React, { useMemo, useState, useCallback } from "react";
+import { AnimatePresence } from "motion/react";
+import { GalleryItem, TextGalleryItem, ImageGalleryItem, OriginRect } from "../types/gallery";
 import { FloatingImage } from "./FloatingImage";
 import { FloatingText } from "./FloatingText";
+import { ImageDetailModal } from "./ImageDetailModal";
+import { Toast } from "./Toast";
 import { SiteConfig } from "../types/site-config";
 
 export interface GalleryProps {
@@ -17,6 +20,28 @@ type GallerySection =
 
 export const Gallery: React.FC<GalleryProps> = React.memo(
   ({ items, onLoadMore, isFetchingMore = false, config }) => {
+    const [selectedState, setSelectedState] = useState<{
+      item: ImageGalleryItem;
+      initialSrc?: string;
+      originRect?: OriginRect;
+    } | null>(null);
+    const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+    const handleSelectImage = useCallback((item: ImageGalleryItem, currentSrc: string, originRect?: OriginRect) => {
+      setSelectedState({ item, initialSrc: currentSrc, originRect });
+    }, []);
+
+    const handleCloseModal = useCallback(() => {
+      setSelectedState(null);
+    }, []);
+
+    const handleShowToast = useCallback((msg: string) => {
+      setToastMessage(msg);
+    }, []);
+
+    const handleCloseToast = useCallback(() => {
+      setToastMessage(null);
+    }, []);
 
     const sections = useMemo(() => {
       const result: GallerySection[] = [];
@@ -119,6 +144,8 @@ export const Gallery: React.FC<GalleryProps> = React.memo(
                         item={item}
                         priority={sectionIdx === 1 && itemIdx < 6}
                         config={config}
+                        onSelect={handleSelectImage}
+                        onShowToast={handleShowToast}
                       />
                     </div>
                   );
@@ -127,6 +154,22 @@ export const Gallery: React.FC<GalleryProps> = React.memo(
             </div>
           );
         })}
+
+        <AnimatePresence>
+          {selectedState && (
+            <ImageDetailModal
+              key={selectedState.item.id}
+              item={selectedState.item}
+              initialSrc={selectedState.initialSrc}
+              originRect={selectedState.originRect}
+              config={config}
+              onClose={handleCloseModal}
+              onShowToast={handleShowToast}
+            />
+          )}
+        </AnimatePresence>
+
+        <Toast message={toastMessage} onClose={handleCloseToast} />
       </main>
     );
   }
