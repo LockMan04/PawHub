@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import { AmbientBackground } from "./components/AmbientBackground";
 import "./styles/globals.css";
 
 try {
@@ -17,7 +18,10 @@ const rootElement = document.getElementById("root");
 if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
-      <App />
+      <AmbientBackground />
+      <div className="app-layer">
+        <App />
+      </div>
     </React.StrictMode>
   );
 }
